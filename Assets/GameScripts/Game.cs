@@ -1,36 +1,89 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Text;
 using UnityEngine;
 
 public class Game : MonoBehaviour
 {
-    [SerializeField] private int players;
-    private bool[] inPlay;
+    private int numPlayers;
+    [SerializeField] private GameObject[] players;
     private int cur;
-    private string[] cardsAvailable;
+    private State curState = State.Waiting;
+    private static string[] cardsAvailable = new string[52];
     //each string is formatted [suit][num]
     //spade = 0, heart = 1, club = 2, diamond = 3
     //ace = 1, ..., king = 13
     //use Circular Array to implement small and big blinds as well
 
+    private enum State
+    {
+        Waiting,
+        Done
+    }
+
     private void Awake()
     {
-        if (players == 0)
+        newGame();
+    }
+
+    private void Update()
+    {
+        if (curState == State.Done)
+        {
+            curState = State.Waiting;
+            PlayerScript curPlayer = players[cur].GetComponent<PlayerScript>();
+            int count = 0;
+            while (!curPlayer.IsPlaying())
+            {
+                if (count > numPlayers)
+                {
+                    // Game over, display whoever is playing as the winner
+                    //press button for new game, if button pressed, new Game
+                    //set all players to playing for next deal
+                    showNewGameButton();
+                    newGame();
+                    return;
+                }
+                IncrementCur();
+                curPlayer = players[cur].GetComponent<PlayerScript>();
+            }
+            Debug.Log("Current player goes...");
+            curPlayer.Go();
+            Debug.Log("Current player went...");
+            
+            
+        }
+    }
+
+    private void showNewGameButton()
+    {
+        //also show quit button
+    }
+
+    private void newGame()
+    {
+        Debug.Log("New game");
+        curState = State.Done;
+        ResetCards();
+        numPlayers = players.Length;
+        if (numPlayers == 0)
         {
             return;
         }
-        inPlay = new bool[players];
-        for (int i = 0; i < players; i++)
-        {
-            inPlay[i] = true;
-        }
         cur = 0;
-        cardsAvailable = new string[52];
-        ResetCards();
+        foreach (GameObject player in players)
+        {
+            player.GetComponent<PlayerScript>().InitializePlayer();
+        }
     }
-    
+
+    public void FinishState()
+    {
+        curState = State.Done;
+    }
+
     private void ResetCards()
     {
         int cardIndex = 0;
@@ -54,9 +107,9 @@ public class Game : MonoBehaviour
         return cur;
     }
 
-    public void NextTurn()
+    public void IncrementCur()
     {
-        cur = (cur + 1) % players;
+        cur = (cur + 1) % numPlayers;
     }
 
     public string[] GetCardsAvailable()
