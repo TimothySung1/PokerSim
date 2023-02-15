@@ -72,7 +72,7 @@ public class PlayerScript : MonoBehaviour
                 //wait for input
                 StartCoroutine("WaitForAction");
                 //disable buttons after
-                
+                callButton.interactable = false;
                 
                 
                 
@@ -94,14 +94,9 @@ public class PlayerScript : MonoBehaviour
         callButton.interactable = false;
         raiseButton.interactable = false;
         foldButton.interactable = false;
-        NextTurn();
+        gameTable.GetComponent<Game>().NextTurn();
     }
 
-    private void NextTurn()
-    {
-        gameTable.GetComponent<Game>().FinishState();
-        gameTable.GetComponent<Game>().IncrementCur();
-    }
 
     public void ChangeChips(int chips, bool lose)
     {
@@ -124,7 +119,7 @@ public class PlayerScript : MonoBehaviour
 
         if (bot)
         {
-            NextTurn();
+            
         }
         acted = true;
     }
@@ -134,7 +129,7 @@ public class PlayerScript : MonoBehaviour
 
         if (bot)
         {
-            NextTurn();
+            
         }
         acted = true;
     }
@@ -144,7 +139,7 @@ public class PlayerScript : MonoBehaviour
 
         if (bot)
         {
-            NextTurn();
+            
         }
         acted = true;
     }
@@ -154,10 +149,11 @@ public class PlayerScript : MonoBehaviour
 
         if (bot)
         {
-            NextTurn();
+            
         }
         playing = false;
         acted = true;
+        gameTable.GetComponent<Game>().DecrementPlayersLeft();
     }
 
     public bool IsPlaying()

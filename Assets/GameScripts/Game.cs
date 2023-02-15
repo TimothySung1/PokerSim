@@ -10,6 +10,7 @@ public class Game : MonoBehaviour
     private int numPlayers;
     [SerializeField] private GameObject[] players;
     private int cur;
+    private int playersLeft;
     private State curState = State.Waiting;
     private static string[] cardsAvailable = new string[52];
     //each string is formatted [suit][num]
@@ -23,7 +24,8 @@ public class Game : MonoBehaviour
         Done
     }
 
-    private void Awake()
+
+    private void Start()
     {
         newGame();
     }
@@ -68,6 +70,7 @@ public class Game : MonoBehaviour
         curState = State.Done;
         ResetCards();
         numPlayers = players.Length;
+        playersLeft = players.Length;
         if (numPlayers == 0)
         {
             return;
@@ -77,6 +80,15 @@ public class Game : MonoBehaviour
         {
             player.GetComponent<PlayerScript>().InitializePlayer();
         }
+        bool gameOver = false;
+
+        //game logic
+        
+    }
+
+    public void NextTurn()
+    {
+        cur = (cur + 1) % players.Length;
     }
 
     public void FinishState()
@@ -115,5 +127,10 @@ public class Game : MonoBehaviour
     public string[] GetCardsAvailable()
     {
         return cardsAvailable;
+    }
+
+    public void DecrementPlayersLeft()
+    {
+        playersLeft--;
     }
 }
