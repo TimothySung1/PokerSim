@@ -29,7 +29,7 @@ public class Game : MonoBehaviour
     {
         newGame();
     }
-
+    /*
     private void Update()
     {
         if (curState == State.Done)
@@ -57,11 +57,12 @@ public class Game : MonoBehaviour
             
             
         }
-    }
+    } */
 
     private void showNewGameButton()
     {
         //also show quit button
+        print("game over");
     }
 
     private void newGame()
@@ -80,15 +81,31 @@ public class Game : MonoBehaviour
         {
             player.GetComponent<PlayerScript>().InitializePlayer();
         }
-        bool gameOver = false;
-
-        //game logic
-        
+        PlayerScript firstPlayer = players[0].GetComponent<PlayerScript>();
+        firstPlayer.Go();
     }
 
     public void NextTurn()
     {
-        cur = (cur + 1) % players.Length;
+        IncrementCur();
+        FinishState();
+        if (playersLeft <= 1)
+        {
+            showNewGameButton();
+            return;
+        }
+        curState = State.Waiting;
+        PlayerScript curPlayer = players[cur].GetComponent<PlayerScript>();
+        for (int i = 0; i < numPlayers; i++)
+        {
+            if (curPlayer.IsPlaying())
+            {
+                break;
+            }
+            IncrementCur();
+            curPlayer = players[cur].GetComponent<PlayerScript>();
+        }
+        curPlayer.Go();
     }
 
     public void FinishState()

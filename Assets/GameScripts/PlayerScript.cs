@@ -62,6 +62,8 @@ public class PlayerScript : MonoBehaviour
             if (bot)
             {
                 CallOrBet();
+                Debug.Log("Player " + playerName + " went...");
+                gameTable.GetComponent<Game>().NextTurn();
             } else
             {
                 
@@ -72,13 +74,13 @@ public class PlayerScript : MonoBehaviour
                 //wait for input
                 StartCoroutine("WaitForAction");
                 //disable buttons after
-                callButton.interactable = false;
+                
                 
                 
                 
                
             }
-            Debug.Log("Player " + playerName + " went...");
+            
         }
     }
 
@@ -94,6 +96,8 @@ public class PlayerScript : MonoBehaviour
         callButton.interactable = false;
         raiseButton.interactable = false;
         foldButton.interactable = false;
+        acted = false;
+        Debug.Log("Player " + playerName + " went...");
         gameTable.GetComponent<Game>().NextTurn();
     }
 
@@ -119,7 +123,7 @@ public class PlayerScript : MonoBehaviour
 
         if (bot)
         {
-            
+            Debug.Log("Bot called/betted");
         }
         acted = true;
     }
