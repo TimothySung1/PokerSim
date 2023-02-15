@@ -102,19 +102,27 @@ public class PlayerScript : MonoBehaviour
     }
 
 
-    public void ChangeChips(int chips, bool lose)
+    public void LoseChips(int chips)
     {
-        if (lose)
+        this.chips -= chips;
+        if (this.chips <= 0)
         {
-            this.chips -= chips;
-            if (chips < 0)
-            {
-                //exit the game, option to rebuy
-            }
-        } else
-        {
-            this.chips += chips;
+            //end game
         }
+    }
+
+    public void GainChips(int chips)
+    {
+        this.chips += chips;
+    }
+
+    
+
+    IEnumerator BotWaitAction()
+    {
+
+        int choice = (int) Random.Range(0, 3);
+        yield return new WaitForSeconds(2);
     }
 
     public void CallOrBet()
@@ -123,6 +131,7 @@ public class PlayerScript : MonoBehaviour
 
         if (bot)
         {
+            
             Debug.Log("Bot called/betted");
         }
         acted = true;
