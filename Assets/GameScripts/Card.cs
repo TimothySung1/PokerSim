@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Card : MonoBehaviour
 {
-    Suit suit;
-    int value;
+    private Suit suit;
+    private int value;
 
     public Card(Suit suit, int value)
     {
