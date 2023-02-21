@@ -49,7 +49,7 @@ public class PlayerScript : MonoBehaviour
                 handIndex++;
             }
         }
-        textBox.text = hand[0] + " " + hand[1];
+        textBox.text = hand[0] + "\n" + hand[1];
         playing = true;
     }
 
