@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class Card : MonoBehaviour
+public class Card
 {
     private Suit suit;
     private int value;
@@ -11,6 +12,12 @@ public class Card : MonoBehaviour
     {
         this.suit = suit;
         this.value = value;
+    }
+
+    public Card()
+    {
+        this.suit = 0;
+        this.value = 0;
     }
 
     public int GetValue()
@@ -23,7 +30,10 @@ public class Card : MonoBehaviour
         return suit;
     }
 
-
+    public override string ToString()
+    {
+        return value + " of " + suit + "s";
+    }
 }
 
 public enum Suit

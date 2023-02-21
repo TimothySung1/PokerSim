@@ -12,7 +12,7 @@ public class Game : MonoBehaviour
     private int cur;
     private int playersLeft;
     private State curState = State.Waiting;
-    private static string[] cardsAvailable = new string[52];
+    private static Card[] cardsAvailable = new Card[52];
     //each string is formatted [suit][num]
     //spade = 0, heart = 1, club = 2, diamond = 3
     //ace = 1, ..., king = 13
@@ -121,10 +121,8 @@ public class Game : MonoBehaviour
             int j = 1;
             while (j < 14)
             {
-                StringBuilder cardBuilder = new StringBuilder();
-                cardBuilder.Append(i.ToString());
-                cardBuilder.Append(j.ToString());
-                cardsAvailable[cardIndex] = cardBuilder.ToString();
+                
+                cardsAvailable[cardIndex] = new Card((Suit) i, j);
                 cardIndex++;
                 j++;
             }
@@ -141,7 +139,7 @@ public class Game : MonoBehaviour
         cur = (cur + 1) % numPlayers;
     }
 
-    public string[] GetCardsAvailable()
+    public Card[] GetCardsAvailable()
     {
         return cardsAvailable;
     }
