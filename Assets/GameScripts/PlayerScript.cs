@@ -17,7 +17,7 @@ public class PlayerScript : MonoBehaviour
     [SerializeField] Button foldButton;
     private bool playing = true;
     private bool acted = false;
-    private string[] hand;
+    private Card[] hand;
 
     private void Awake()
     {
@@ -35,13 +35,13 @@ public class PlayerScript : MonoBehaviour
 
     public void InitializePlayer()
     {
-        hand = new string[2];
+        hand = new Card[2];
         int handIndex = 0;
-        string[] cards = gameTable.GetComponent<Game>().GetCardsAvailable();
+        Card[] cards = gameTable.GetComponent<Game>().GetCardsAvailable();
         while (handIndex < 2)
         {
             int cardIndex = (int)(Random.value * 51);
-            string card = cards[cardIndex];
+            Card card = cards[cardIndex];
             if (card != null)
             {
                 hand[handIndex] = card;

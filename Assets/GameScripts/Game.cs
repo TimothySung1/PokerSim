@@ -7,24 +7,38 @@ using UnityEngine;
 
 public class Game : MonoBehaviour
 {
+
+    public enum Hand
+    {
+        HighCard, Pair, TwoPair, ThreeOfAKind, Straight,
+        Flush, FullHouse, FourOfAKind, StraightFlush,
+        RoyalFlush
+    }
+
     private int numPlayers;
     [SerializeField] private GameObject[] players;
     private int cur;
     private int playersLeft;
-    private State curState = State.Waiting;
-    private static string[] cardsAvailable = new string[52];
+    //private State curState = State.Waiting;
+    private static Card[] cardsAvailable = new Card[52];
+    private static Card[] cardsOnTable = new Card[5];
     //each string is formatted [suit][num]
     //spade = 0, heart = 1, club = 2, diamond = 3
     //ace = 1, ..., king = 13
     //use Circular Array to implement small and big blinds as well
 
+    /*
     private enum State
     {
         Waiting,
         Done
     }
+    */
 
-
+    public static Card[] GetCardsOnTable()
+    {
+        return cardsOnTable;
+    }
     private void Start()
     {
         newGame();
@@ -68,7 +82,7 @@ public class Game : MonoBehaviour
     private void newGame()
     {
         Debug.Log("New game");
-        curState = State.Done;
+        //curState = State.Done;
         ResetCards();
         numPlayers = players.Length;
         playersLeft = players.Length;
@@ -88,13 +102,13 @@ public class Game : MonoBehaviour
     public void NextTurn()
     {
         IncrementCur();
-        FinishState();
+        //FinishState();
         if (playersLeft <= 1)
         {
             showNewGameButton();
             return;
         }
-        curState = State.Waiting;
+        //curState = State.Waiting;
         PlayerScript curPlayer = players[cur].GetComponent<PlayerScript>();
         for (int i = 0; i < numPlayers; i++)
         {
@@ -108,23 +122,24 @@ public class Game : MonoBehaviour
         curPlayer.Go();
     }
 
+    /*
     public void FinishState()
     {
         curState = State.Done;
     }
+    */
 
     private void ResetCards()
     {
         int cardIndex = 0;
         for (int i = 0; i < 4; i++)
         {
+            Suit suit = (Suit)i;
             int j = 1;
             while (j < 14)
             {
-                StringBuilder cardBuilder = new StringBuilder();
-                cardBuilder.Append(i.ToString());
-                cardBuilder.Append(j.ToString());
-                cardsAvailable[cardIndex] = cardBuilder.ToString();
+                Card card = new Card(suit, j);
+                cardsAvailable[cardIndex] = card;
                 cardIndex++;
                 j++;
             }
@@ -141,7 +156,7 @@ public class Game : MonoBehaviour
         cur = (cur + 1) % numPlayers;
     }
 
-    public string[] GetCardsAvailable()
+    public Card[] GetCardsAvailable()
     {
         return cardsAvailable;
     }
