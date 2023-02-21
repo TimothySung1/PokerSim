@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+
 using UnityEngine;
 
 public class Card
@@ -45,6 +46,7 @@ public class Card
 
     public Suit GetSuit() { return suit; }
     public int GetValue() { return value; }
+
 }
 
 public enum Suit

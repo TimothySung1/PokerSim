@@ -22,6 +22,7 @@ public class Game : MonoBehaviour
     //private State curState = State.Waiting;
     private static Card[] cardsAvailable = new Card[52];
     private static Card[] cardsOnTable = new Card[5];
+
     //each string is formatted [suit][num]
     //spade = 0, heart = 1, club = 2, diamond = 3
     //ace = 1, ..., king = 13
